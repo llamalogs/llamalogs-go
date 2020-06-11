@@ -1,28 +1,62 @@
 package llamalogs
 
-import "fmt"
+// gofmt -s -w .
 
-type LogArgs struct {
-	Sender   string
-	Receiver string
-	Message  string
-	IsError  bool
-}
+var globalGraphName = ""
+var globalAccountKey = ""
 
 func Init(accountKey string, graphName string) {
-
+	startTimer()
+	globalGraphName = graphName
+	globalAccountKey = accountKey
 }
 
 func Log(args LogArgs) {
-	fmt.Println("from the log llama!")
-	p := fmt.Sprintf("log sender %s", args.Sender)
-	fmt.Println(p)
+	newLog := args.toLog()
+	processLog(newLog)
 }
 
-func Hello() {
-	fmt.Println("from the llama!")
+func PointStat(args StatArgs) {
+	newStat := args.toStat()
+	newStat.kind = "point"
+	processStat(newStat)
 }
 
-func Bye() {
-	fmt.Println("bye from the llama!")
+func AvgStat(args StatArgs) {
+	newStat := args.toStat()
+	newStat.kind = "average"
+	processStat(newStat)
+}
+
+func MaxStat(args StatArgs) {
+	newStat := args.toStat()
+	newStat.kind = "max"
+	processStat(newStat)
+}
+
+func ForceSend() {
+	sendMessages()
+}
+
+func processStat(newStat stat) {
+	if newStat.account == "" {
+		newStat.account = globalAccountKey
+	}
+
+	if newStat.graph == "" {
+		newStat.graph = globalGraphName
+	}
+
+	addStat(newStat)
+}
+
+func processLog(newLog logStruct) {
+	if newLog.account == "" {
+		newLog.account = globalAccountKey
+	}
+
+	if newLog.graph == "" {
+		newLog.graph = globalGraphName
+	}
+	addLog(newLog)
 }
