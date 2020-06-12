@@ -7,7 +7,7 @@ import (
 )
 
 type logMap = map[string]map[string]*aggregatedLog
-type statMap = map[string]map[string]stat
+type statMap = map[string]map[string]*stat
 
 var logMutex = &sync.Mutex{}
 
@@ -81,10 +81,10 @@ func addStat(newStat stat) {
 
 	if newStat.kind == "point" {
 		if componentMap, found := aggregateStats[newStat.component]; found {
-			componentMap[newStat.name] = newStat
+			componentMap[newStat.name] = &newStat
 		} else {
-			aggregateStats[newStat.component] = make(map[string]stat)
-			aggregateStats[newStat.component][newStat.name] = newStat
+			aggregateStats[newStat.component] = make(map[string]*stat)
+			aggregateStats[newStat.component][newStat.name] = &newStat
 		}
 	}
 
@@ -100,11 +100,11 @@ func addStat(newStat stat) {
 
 func addStatAvg(newStat stat) {
 	if _, found := aggregateStats[newStat.component]; !found {
-		aggregateStats[newStat.component] = make(map[string]stat)
+		aggregateStats[newStat.component] = make(map[string]*stat)
 	}
 
 	if _, found := aggregateStats[newStat.component][newStat.name]; !found {
-		aggregateStats[newStat.component][newStat.name] = newStat
+		aggregateStats[newStat.component][newStat.name] = &newStat
 		newStat.count = 0
 	}
 
@@ -115,11 +115,11 @@ func addStatAvg(newStat stat) {
 
 func addStatMax(newStat stat) {
 	if _, found := aggregateStats[newStat.component]; !found {
-		aggregateStats[newStat.component] = make(map[string]stat)
+		aggregateStats[newStat.component] = make(map[string]*stat)
 	}
 
 	if _, found := aggregateStats[newStat.component][newStat.name]; !found {
-		aggregateStats[newStat.component][newStat.name] = newStat
+		aggregateStats[newStat.component][newStat.name] = &newStat
 	}
 	existing := aggregateStats[newStat.component][newStat.name]
 	if newStat.value > existing.value {
