@@ -63,7 +63,7 @@ func addLog(newLog logStruct) {
 	// if (log.initialMessage):
 	// 	working_ob.initialMessageCount = working_ob.initialMessageCount + 1
 
-	existing.total = existing.total + 1
+	existing.count = existing.count + 1
 	if existing.log == "" && !newLog.isError {
 		existing.log = newLog.log
 	}

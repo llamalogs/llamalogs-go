@@ -4,7 +4,7 @@ type aggregatedLog struct {
 	sender              string
 	receiver            string
 	account             string
-	total               int
+	count               int
 	errors              int
 	elapsed             int
 	log                 string
@@ -18,7 +18,7 @@ type jsonLog struct {
 	Receiver            string `json:"receiver"`
 	Account             string `json:"account"`
 	Graph               string `json:"graph"`
-	Total               int    `json:"total"`
+	Count               int    `json:"count"`
 	Errors              int    `json:"errors"`
 	Elapsed             int    `json:"elapsed"`
 	Log                 string `json:"log"`
@@ -31,7 +31,7 @@ func (ag aggregatedLog) toJSONType() jsonLog {
 		Sender:              ag.sender,
 		Receiver:            ag.receiver,
 		Account:             ag.account,
-		Total:               ag.total,
+		Count:               ag.count,
 		Errors:              ag.errors,
 		Elapsed:             ag.elapsed,
 		Log:                 ag.log,
