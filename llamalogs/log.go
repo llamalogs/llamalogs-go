@@ -4,7 +4,7 @@ type logStruct struct {
 	sender           string
 	receiver         string
 	timestamp        int64
-	log              string
+	message          string
 	isInitialMessage bool
 	account          string
 	graph            string

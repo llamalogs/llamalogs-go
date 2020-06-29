@@ -1,7 +1,6 @@
 package llamalogs
 
 import (
-	"fmt"
 	"sync"
 	"time"
 )
@@ -15,14 +14,13 @@ var aggregateLogs = make(logMap)
 var aggregateStats = make(statMap)
 
 func startTimer() {
-	ticker := time.NewTicker(5000 * time.Millisecond)
+	ticker := time.NewTicker(59500 * time.Millisecond)
 
 	go func() {
 		for {
 			select {
 			case t := <-ticker.C:
 				go sendMessages()
-				fmt.Println("Tick at", t)
 			}
 		}
 	}()
@@ -64,11 +62,11 @@ func addLog(newLog logStruct) {
 	// 	working_ob.initialMessageCount = working_ob.initialMessageCount + 1
 
 	existing.count = existing.count + 1
-	if existing.log == "" && !newLog.isError {
-		existing.log = newLog.log
+	if existing.message == "" && !newLog.isError {
+		existing.message = newLog.message
 	}
-	if existing.errorLog == "" && newLog.isError {
-		existing.errorLog = newLog.log
+	if existing.errorMessage == "" && newLog.isError {
+		existing.errorMessage = newLog.message
 	}
 
 	// aggregateLogs[newLog.sender][newLog.receiver] = existing

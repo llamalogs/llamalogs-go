@@ -7,8 +7,8 @@ type aggregatedLog struct {
 	count               int
 	errors              int
 	elapsed             int
-	log                 string
-	errorLog            string
+	message             string
+	errorMessage        string
 	initialMessageCount int
 	graph               string
 }
@@ -21,8 +21,8 @@ type jsonLog struct {
 	Count               int    `json:"count"`
 	Errors              int    `json:"errors"`
 	Elapsed             int    `json:"elapsed"`
-	Log                 string `json:"log"`
-	ErrorLog            string `json:"errorLog"`
+	Message             string `json:"message"`
+	ErrorMessage        string `json:"errorMessage"`
 	InitialMessageCount int    `json:"initialMessageCount"`
 }
 
@@ -34,8 +34,8 @@ func (ag aggregatedLog) toJSONType() jsonLog {
 		Count:               ag.count,
 		Errors:              ag.errors,
 		Elapsed:             ag.elapsed,
-		Log:                 ag.log,
-		ErrorLog:            ag.errorLog,
+		Message:             ag.message,
+		ErrorMessage:        ag.errorMessage,
 		InitialMessageCount: ag.initialMessageCount,
 		Graph:               ag.graph}
 }
