@@ -16,7 +16,7 @@ func (l LogArgs) toLog() logStruct {
 		sender:           l.Sender,
 		receiver:         l.Receiver,
 		timestamp:        time.Now().UnixNano() / int64(time.Millisecond),
-		log:              l.Message,
+		message:          l.Message,
 		isInitialMessage: true,
 		account:          l.AccountKey,
 		graph:            l.GraphName,

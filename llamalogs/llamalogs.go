@@ -1,14 +1,17 @@
 package llamalogs
 
-// gofmt -s -w .
-
 var globalGraphName = ""
 var globalAccountKey = ""
+var globalIsDevEnv = false
 
 func Init(accountKey string, graphName string) {
 	startTimer()
 	globalGraphName = graphName
 	globalAccountKey = accountKey
+}
+
+func SetDevEnv() {
+	globalIsDevEnv = true
 }
 
 func Log(args LogArgs) {
@@ -58,5 +61,10 @@ func processLog(newLog logStruct) {
 	if newLog.graph == "" {
 		newLog.graph = globalGraphName
 	}
+
+	if newLog.sender == "" || newLog.receiver == "" || newLog.account == "" || newLog.graph == "" {
+		return
+	}
+
 	addLog(newLog)
 }

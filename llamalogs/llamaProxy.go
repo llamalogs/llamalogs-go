@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func sendMessages() {
+func collectMessages() ([]jsonLog, []jsonStat) {
 	existingLogs, existingStats := getAndClearLogs()
 
 	logList := []jsonLog{}
@@ -26,6 +26,11 @@ func sendMessages() {
 		}
 	}
 
+	return logList, statList
+}
+
+func sendMessages() {
+	logList, statList := collectMessages()
 	if len(logList) == 0 && len(statList) == 0 {
 		return
 	}
@@ -53,9 +58,14 @@ func sendMessages() {
 		log.Fatal("Cannot encode to JSON ", err)
 	}
 
-	resp, err := http.Post("http://llamalogs.com/api/v0/timedata", "application/json", bytes.NewBuffer(jsonValue))
+	url := "https://llamalogs.com/api/v0/timedata"
+	if globalIsDevEnv {
+		url = "http://localhost:4000/api/v0/timedata"
+	}
 
-	if err != nil {
+	_, postErr := http.Post(url, "application/json", bytes.NewBuffer(jsonValue))
+
+	if postErr != nil {
 		fmt.Printf("LlamaLogs Error; Error sending data - %s", err)
 	}
 }

@@ -12,18 +12,25 @@ var logMutex = &sync.Mutex{}
 
 var aggregateLogs = make(logMap)
 var aggregateStats = make(statMap)
+var timerStarted = true
 
 func startTimer() {
+	if timerStarted {
+		return
+	}
+
 	ticker := time.NewTicker(59500 * time.Millisecond)
 
 	go func() {
 		for {
 			select {
-			case t := <-ticker.C:
+			case _ = <-ticker.C:
 				go sendMessages()
 			}
 		}
 	}()
+
+	timerStarted = true
 }
 
 func getAndClearLogs() (logMap, statMap) {
