@@ -3,41 +3,55 @@ package llamalogs
 var globalGraphName = ""
 var globalAccountKey = ""
 var globalIsDevEnv = false
+var globalIsDisabled = false
 
-func Init(accountKey string, graphName string) {
+func Init(args InitArgs) {
 	startTimer()
-	globalGraphName = graphName
-	globalAccountKey = accountKey
-}
-
-func SetDevEnv() {
-	globalIsDevEnv = true
+	globalGraphName = args.GraphName
+	globalAccountKey = args.AccountKey
+	globalIsDevEnv = args.IsDevEnv
+	globalIsDisabled = args.Disabled
 }
 
 func Log(args LogArgs) {
+	if globalIsDisabled {
+		return
+	}
 	newLog := args.toLog()
 	processLog(newLog)
 }
 
 func PointStat(args StatArgs) {
+	if globalIsDisabled {
+		return
+	}
 	newStat := args.toStat()
 	newStat.kind = "point"
 	processStat(newStat)
 }
 
 func AvgStat(args StatArgs) {
+	if globalIsDisabled {
+		return
+	}
 	newStat := args.toStat()
 	newStat.kind = "average"
 	processStat(newStat)
 }
 
 func MaxStat(args StatArgs) {
+	if globalIsDisabled {
+		return
+	}
 	newStat := args.toStat()
 	newStat.kind = "max"
 	processStat(newStat)
 }
 
 func ForceSend() {
+	if globalIsDisabled {
+		return
+	}
 	sendMessages()
 }
 
