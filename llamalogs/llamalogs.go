@@ -6,11 +6,14 @@ var globalIsDevEnv = false
 var globalIsDisabled = false
 
 func Init(args InitArgs) {
-	startTimer()
 	globalGraphName = args.GraphName
 	globalAccountKey = args.AccountKey
 	globalIsDevEnv = args.IsDevEnv
 	globalIsDisabled = args.Disabled
+
+	if globalIsDisabled != true {
+		startTimer()
+	}
 }
 
 func Log(args LogArgs) {
