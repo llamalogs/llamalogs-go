@@ -1,6 +1,7 @@
 package llamalogs
 
 import (
+	"fmt"
 	"sync"
 	"time"
 )
@@ -12,7 +13,7 @@ var logMutex = &sync.Mutex{}
 
 var aggregateLogs = make(logMap)
 var aggregateStats = make(statMap)
-var timerStarted = true
+var timerStarted = false
 
 func startTimer() {
 	if timerStarted {
@@ -82,6 +83,10 @@ func addLog(newLog logStruct) {
 	}
 
 	// aggregateLogs[newLog.sender][newLog.receiver] = existing
+
+	if globalIsDevEnv {
+		fmt.Println(aggregateLogs)
+	}
 
 	logMutex.Unlock()
 }

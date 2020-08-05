@@ -32,6 +32,11 @@ func collectMessages() ([]jsonLog, []jsonStat) {
 
 func sendMessages() {
 	logList, statList := collectMessages()
+
+	if globalIsDevEnv {
+		fmt.Println(logList)
+	}
+
 	if len(logList) == 0 && len(statList) == 0 {
 		return
 	}
@@ -61,6 +66,7 @@ func sendMessages() {
 
 	url := "https://llamalogs.com/api/v0/timedata"
 	if globalIsDevEnv {
+		fmt.Println("calling llama proxy")
 		url = "http://localhost:4000/api/v0/timedata"
 	}
 
