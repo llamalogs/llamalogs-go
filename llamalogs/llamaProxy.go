@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 )
 
 func collectMessages() ([]jsonLog, []jsonStat) {
@@ -63,7 +64,11 @@ func sendMessages() {
 		url = "http://localhost:4000/api/v0/timedata"
 	}
 
-	_, postErr := http.Post(url, "application/json", bytes.NewBuffer(jsonValue))
+	var netClient = &http.Client{
+		Timeout: time.Second * 5,
+	}
+
+	_, postErr := netClient.Post(url, "application/json", bytes.NewBuffer(jsonValue))
 
 	if postErr != nil {
 		fmt.Printf("LlamaLogs Error; Error sending data - %s", err)

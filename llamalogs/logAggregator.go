@@ -18,6 +18,11 @@ func startTimer() {
 	if timerStarted {
 		return
 	}
+	// sending in data after 5 seconds for the first time for early results
+	go func() {
+		time.Sleep(5 * time.Second)
+		go sendMessages()
+	}()
 
 	ticker := time.NewTicker(59500 * time.Millisecond)
 
